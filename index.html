@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forjune - Customer Reviews & Credits</title>
+    <!-- Google Fonts: Prompt & Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fff7f9;
+            --card-bg: #ffffff;
+            --primary-pink: #fbc4ab;
+            --accent-pink: #f8ad9d;
+            --soft-purple: #e8dff5;
+            --soft-yellow: #fcf6bd;
+            --soft-green: #d8e2dc;
+            --text-main: #6d597a;
+            --text-muted: #b5e2fa;
+            --star-color: #fca311;
+            --danger-color: #f07167;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+        }
+
+        /* Header section */
+        header {
+            background: linear-gradient(135deg, #ffe5ec, #e8dff5);
+            padding: 25px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(248, 173, 157, 0.15);
+            margin-bottom: 20px;
+            border: 2px solid #ffffff;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: #b56576;
+            margin-bottom: 5px;
+        }
+
+        .contact-info {
+            font-size: 0.9rem;
+            color: #7f557d;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 6px 16px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            padding: 12px 20px;
+            border-radius: 16px;
+            display: inline-block;
+            margin-top: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+
+        .stat-card span {
+            font-weight: 600;
+            font-size: 1.4rem;
+            color: #e56b6f;
+        }
+
+        /* Form section */
+        .card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 20px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.03);
+            margin-bottom: 20px;
+            border: 1px solid #f1e3e8;
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #6d597a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #f0d6dc;
+            border-radius: 14px;
+            outline: none;
+            font-size: 0.95rem;
+            background-color: #fffbfd;
+            transition: all 0.2s;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--accent-pink);
+            background-color: #ffffff;
+        }
+
+        /* Star Rating Input */
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 6px;
+            font-size: 1.8rem;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: color 0.2s;
+            margin-bottom: 0;
+        }
+
+        .star-rating :checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: var(--star-color);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #fbc4ab, #f8ad9d);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s, shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(248, 173, 157, 0.4);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(248, 173, 157, 0.5);
+        }
+
+        /* Admin bar toggle */
+        .admin-toggle {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        .admin-toggle button {
+            background: none;
+            border: none;
+            color: #b56576;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* Review list */
+        .review-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #f7e1d7;
+            position: relative;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: #355070;
+            font-size: 1rem;
+        }
+
+        .review-stars {
+            color: var(--star-color);
+            font-size: 1rem;
+        }
+
+        .review-text {
+            font-size: 0.95rem;
+            color: #4a4e69;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            white-space: pre-line;
+        }
+
+        .review-date {
+            font-size: 0.75rem;
+            color: #a0a0a0;
+        }
+
+        /* Reply box */
+        .shop-reply {
+            background-color: #f7f1f8;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 10px;
+            border-left: 3.5px solid #b56576;
+            font-size: 0.88rem;
+        }
+
+        .reply-header {
+            font-weight: 600;
+            color: #b56576;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Admin actions */
+        .admin-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .btn-reply, .btn-delete {
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-reply {
+            background-color: var(--soft-purple);
+            color: #6d597a;
+        }
+
+        .btn-delete {
+            background-color: #ffe5ec;
+            color: var(--danger-color);
+        }
+
+        .reply-input-box {
+            margin-top: 10px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .reply-input-box input {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+        }
+
+        .reply-input-box button {
+            background: #b56576;
+            color: white;
+            border: none;
+            padding: 0 14px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header>
+        <h1>🌸 Forjune 🌸</h1>
+        <div class="contact-info">
+            💬 ติดต่อ: <b>@141xwdxc</b> หรือ <b>@536keufg</b>
+        </div>
+        <br>
+        <div class="stat-card">
+            ยอดเครดิตทั้งหมด: <span id="total-credits">0</span> รีวิว ✨
+        </div>
+    </header>
+
+    <!-- Admin mode toggle -->
+    <div class="admin-toggle">
+        <button onclick="toggleAdminMode()" id="admin-btn">🔑 สำหรับเจ้าของร้าน (Admin Mode)</button>
+    </div>
+
+    <!-- Review Form -->
+    <div class="card">
+        <h2>✍️ เขียนเครดิต / รีวิวให้ร้านค้า</h2>
+        <form id="creditForm">
+            <div class="form-group">
+                <label for="username">ชื่อของคุณ (ลูกค้า)</label>
+                <input type="text" id="username" placeholder="เช่น คุณมินท์ / @User" required>
+            </div>
+            
+            <div class="form-group">
+                <label>ให้คะแนนร้านค้า</label>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5" required><label for="star5">★</label>
+                    <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                    <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                    <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                    <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="comment">ข้อความรีวิว / ความประทับใจ</label>
+                <textarea id="comment" rows="3" placeholder="บริการดี พ่อค้า/แม่ค้า น่ารัก ตอบไวมากๆ ครับ..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">💖 ส่งเครดิตให้ร้าน Forjune</button>
+        </form>
+    </div>
+
+    <!-- Reviews Display Section -->
+    <div class="card">
+        <h2>💬 เครดิตจากลูกค้าทั้งหมด</h2>
+        <div id="reviewsList">
+            <!-- รีวิวจะมาแสดงตรงนี้ -->
+        </div>
+    </div>
+</div>
+
+<script>
+    let isAdmin = false;
+
+    // ดึงข้อมูลจาก LocalStorage
+    function getReviews() {
+        const stored = localStorage.getItem('forjune_credits');
+        return stored ? JSON.parse(stored) : [];
+    }
+
+    // บันทึกข้อมูล
+    function saveReviews(reviews) {
+        localStorage.setItem('forjune_credits', JSON.stringify(reviews));
+        renderReviews();
+    }
+
+    // แสดงผล
+    function renderReviews() {
+        const reviews = getReviews();
+        const listEl = document.getElementById('reviewsList');
+        const totalEl = document.getElementById('total-credits');
+
+        totalEl.innerText = reviews.length;
+        listEl.innerHTML = '';
+
+        if (reviews.length === 0) {
+            listEl.innerHTML = '<p style="text-align: center; color: #a0a0a0; padding: 20px;">ยังไม่มีเครดิตในขณะนี้ เป็นคนแรกที่ให้เครดิตร้านเราสิคะ/ครับ! ✨</p>';
+            return;
+        }
+
+        reviews.forEach((item, index) => {
+            const stars = '★'.repeat(item.rating) + '☆'.repeat(5 - item.rating);
+            
+            let replyHTML = '';
+            if (item.reply) {
+                replyHTML = `
+                    <div class="shop-reply">
+                        <div class="reply-header">🎀 ร้าน Forjune ตอบกลับ:</div>
+                        <div>${item.reply}</div>
+                    </div>
+                `;
+            }
+
+            let adminActionsHTML = '';
+            if (isAdmin) {
+                adminActionsHTML = `
+                    <div class="admin-actions">
+                        <button class="btn-reply" onclick="showReplyBox(${index})">💬 ตอบกลับ</button>
+                        <button class="btn-delete" onclick="deleteReview(${index})">🗑️ ลบเครดิต</button>
+                    </div>
+                    <div id="reply-box-${index}" class="reply-input-box" style="display: none;">
+                        <input type="text" id="reply-input-${index}" placeholder="พิมพ์ข้อความตอบกลับ..." value="${item.reply || ''}">
+                        <button onclick="submitReply(${index})">บันทึก</button>
+                    </div>
+                `;
+            }
+
+            const card = document.createElement('div');
+            card.className = 'review-card';
+            card.innerHTML = `
+                <div class="review-header">
+                    <span class="reviewer-name">👤 ${escapeHtml(item.name)}</span>
+                    <span class="review-stars">${stars}</span>
+                </div>
+                <div class="review-text">${escapeHtml(item.comment)}</div>
+                <div class="review-date">🕒 ${item.date}</div>
+                ${replyHTML}
+                ${adminActionsHTML}
+            `;
+            listEl.appendChild(card);
+        });
+    }
+
+    // เพิ่มรีวิวใหม่
+    document.getElementById('creditForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('username').value.trim();
+        const rating = parseInt(document.querySelector('input[name="rating"]:checked').value);
+        const comment = document.getElementById('comment').value.trim();
+        
+        const newReview = {
+            name: name,
+            rating: rating,
+            comment: comment,
+            date: new Date().toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' }),
+            reply: ''
+        };
+
+        const reviews = getReviews();
+        reviews.unshift(newReview); // เพิ่มไว้บนสุด
+        saveReviews(reviews);
+
+        // Reset form
+        this.reset();
+        alert('ขอบคุณสำหรับเครดิตและรีวิวนะคะ/ครับ! 🌸');
+    });
+
+    // สลับ Admin Mode
+    function toggleAdminMode() {
+        if (!isAdmin) {
+            const pass = prompt('กรุณากรอกรหัสผ่านร้านค้า (ตั้งไว้เบื้องต้น: 1234):');
+            if (pass === '1234') { // สามารถเปลี่ยนรหัสผ่านตรงนี้ได้
+                isAdmin = true;
+                document.getElementById('admin-btn').innerText = '🔓 ออกจากระบบ Admin';
+                alert('เข้าสู่โหมด Admin เรียบร้อย!');
+            } else if (pass !== null) {
+                alert('รหัสผ่านไม่ถูกต้อง');
+            }
+        } else {
+            isAdmin = false;
+            document.getElementById('admin-btn').innerText = '🔑 สำหรับเจ้าของร้าน (Admin Mode)';
+        }
+        renderReviews();
+    }
+
+    // ลบรีวิว
+    function deleteReview(index) {
+        if (confirm('คุณต้องการลบเครดิตนี้ใช่หรือไม่? (ใช้สำหรับลบก่อกวน/ปั่น)')) {
+            const reviews = getReviews();
+            reviews.splice(index, 1);
+            saveReviews(reviews);
+        }
+    }
+
+    // แสดงช่องตอบกลับ
+    function showReplyBox(index) {
+        const box = document.getElementById(`reply-box-${index}`);
+        box.style.display = box.style.display === 'none' ? 'flex' : 'none';
+    }
+
+    // บันทึกคำตอบกลับ
+    function submitReply(index) {
+        const text = document.getElementById(`reply-input-${index}`).value.trim();
+        const reviews = getReviews();
+        reviews[index].reply = text;
+        saveReviews(reviews);
+    }
+
+    // กรอง Text กัน Script injection
+    function escapeHtml(text) {
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    // เริ่มต้นแสดงผล
+    renderReviews();
+</script>
+
+</body>
+</html>
