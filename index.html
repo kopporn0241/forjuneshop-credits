@@ -460,8 +460,8 @@
     // สลับ Admin Mode
     function toggleAdminMode() {
         if (!isAdmin) {
-            const pass = prompt('กรุณากรอกรหัสผ่านร้านค้า (ตั้งไว้เบื้องต้น: 1234):');
-            if (pass === '1234') { // สามารถเปลี่ยนรหัสผ่านตรงนี้ได้
+            const pass = prompt('กรุณากรอกรหัสผ่านร้านค้า:');
+            if (pass === '07082010_toon') { // สามารถเปลี่ยนรหัสผ่านตรงนี้ได้
                 isAdmin = true;
                 document.getElementById('admin-btn').innerText = '🔓 ออกจากระบบ Admin';
                 alert('เข้าสู่โหมด Admin เรียบร้อย!');
